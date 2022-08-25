@@ -49,6 +49,10 @@ module "virtual_network_gateway_connections" {
     null
   )
 
+  depends_on = [
+    module.virtual_network_gateways
+  ]
+
 }
 
 module "local_network_gateways" {
