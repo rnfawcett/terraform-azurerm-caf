@@ -22,6 +22,14 @@ variable "express_route_circuit_id" {}
 variable "authorization_key" {}
 variable "virtual_network_gateway_id" {}
 variable "local_network_gateway_id" {}
+###########################################################
+# Added to enable FastPath feature
+###########################################################
+variable "express_route_gateway_bypass" {
+  description = "Boolean flag in order to enable FastPath"
+  type = bool
+  default = false
+}
 
 
 

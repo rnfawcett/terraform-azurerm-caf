@@ -15,6 +15,8 @@ resource "azurerm_virtual_network_gateway_connection" "vngw_connection" {
   #only ExpressRoute and IPSec are supported. Vnet2Vnet is excluded.
   type                       = var.settings.type
   virtual_network_gateway_id = var.virtual_network_gateway_id
+  # Added in order to enable FastPath capability
+  express_route_gateway_bypass = var.express_route_gateway_bypass
 
   # The following arguments are applicable only if the type is ExpressRoute
   express_route_circuit_id = try(var.express_route_circuit_id, null)
