@@ -10,7 +10,7 @@ resource "azurecaf_name" "linux" {
   for_each = local.os_type == "linux" ? var.settings.vmss_settings : {}
 
   name          = each.value.name
-  resource_type = "azurerm_virtual_machine_scale_set"
+  resource_type = "azurerm_linux_virtual_machine_scale_set"
   prefixes      = var.global_settings.prefixes
   random_length = var.global_settings.random_length
   clean_input   = true
@@ -24,7 +24,7 @@ resource "azurecaf_name" "linux_computer_name_prefix" {
   for_each = local.os_type == "linux" ? var.settings.vmss_settings : {}
 
   name          = try(each.value.computer_name_prefix, each.value.name)
-  resource_type = "azurerm_virtual_machine_scale_set"
+  resource_type = "azurerm_linux_virtual_machine"
   prefixes      = var.global_settings.prefixes
   random_length = var.global_settings.random_length
   clean_input   = true
