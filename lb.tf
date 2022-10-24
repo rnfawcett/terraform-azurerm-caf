@@ -142,6 +142,7 @@ module "lb_rule" {
     resource_group          = local.combined_objects_resource_groups
     lb                      = local.combined_objects_lb
     lb_backend_address_pool = local.combined_objects_lb_backend_address_pool
+    lb_probe                = local.combined_objects_lb_probe
   }
 }
 output "lb_rule" {

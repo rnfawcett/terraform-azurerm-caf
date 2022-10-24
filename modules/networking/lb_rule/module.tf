@@ -18,7 +18,7 @@ resource "azurerm_lb_rule" "lb" {
   frontend_port                  = var.settings.frontend_port
   backend_port                   = var.settings.backend_port
   backend_address_pool_ids       = [can(var.settings.backend_address_pool.id) ? var.settings.backend_address_pool.id : var.remote_objects.lb_backend_address_pool[try(var.settings.loadbalancer.lz_key, var.client_config.landingzone_key)][var.settings.backend_address_pool.key].id]
-  probe_id                       = can(var.settings.probe.id) ? var.settings.probe.id : var.remote_objects.lb[try(var.settings.loadbalancer.lz_key, var.client_config.landingzone_key)][var.settings.probe.key].id
+  probe_id                       = can(var.settings.probe.id) ? var.settings.probe.id : var.remote_objects.lb_probe[try(var.settings.loadbalancer.lz_key, var.client_config.landingzone_key)][var.settings.probe.key].id
   enable_floating_ip             = try(var.settings.enable_floating_ip, null)
   idle_timeout_in_minutes        = try(var.settings.idle_timeout_in_minutes, null)
   load_distribution              = try(var.settings.load_distribution, null)
