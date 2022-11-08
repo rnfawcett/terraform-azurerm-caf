@@ -242,7 +242,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
     }
   }
 
-  health_probe_id = try(var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
+  # removing soon-to-be deprecated load_balancer.tf references from the code...
+  # health_probe_id = try(var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
+  health_probe_id = try(
+    var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id,
+    try(var.lbs[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
+  )
+
 
   # lifecycle {
   #   ignore_changes = [
@@ -299,9 +305,9 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss_autoscaled" {
       network_security_group_id     = try(network_interface.value.network_security_group_id, null)
 
       ip_configuration {
-        name                                         = azurecaf_name.linux_nic[network_interface.key].result
-        primary                                      = true
-        subnet_id                                    = can(network_interface.value.subnet_id) ? network_interface.value.subnet_id : var.vnets[try(network_interface.value.lz_key, var.client_config.landingzone_key)][network_interface.value.vnet_key].subnets[network_interface.value.subnet_key].id
+        name      = azurecaf_name.linux_nic[network_interface.key].result
+        primary   = true
+        subnet_id = can(network_interface.value.subnet_id) ? network_interface.value.subnet_id : var.vnets[try(network_interface.value.lz_key, var.client_config.landingzone_key)][network_interface.value.vnet_key].subnets[network_interface.value.subnet_key].id
         ####################################################################
         # load_balancer_backend_address_pool_ids       = try(local.load_balancer_backend_address_pool_ids, null)
         # Copied from azurerm_linux_virtual_machine_scale_set resource above to auto-scaled here as
@@ -439,7 +445,12 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss_autoscaled" {
     }
   }
 
-  health_probe_id = try(var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
+  # removing soon-to-be deprecated load_balancer.tf references from the code...
+  # health_probe_id = try(var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
+  health_probe_id = try(
+    var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id,
+    try(var.lbs[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
+  )
 
   lifecycle {
     ignore_changes = [
