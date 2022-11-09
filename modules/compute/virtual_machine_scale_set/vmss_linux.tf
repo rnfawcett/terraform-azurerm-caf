@@ -242,13 +242,10 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
     }
   }
 
-  # removing soon-to-be deprecated load_balancer.tf references from the code for lb.tf references...
-  # health_probe_id = try(var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
   health_probe_id = try(
     var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id,
-    try(var.lbs[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
+    try(var.lb_probes[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.probe_key].id, null)
   )
-
 
   # lifecycle {
   #   ignore_changes = [
@@ -445,11 +442,9 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss_autoscaled" {
     }
   }
 
-  # removing soon-to-be deprecated load_balancer.tf references from the code for lb.tf references.
-  # health_probe_id = try(var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
   health_probe_id = try(
     var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id,
-    try(var.lbs[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
+    try(var.lb_probes[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.probe_key].id, null)
   )
 
   lifecycle {
