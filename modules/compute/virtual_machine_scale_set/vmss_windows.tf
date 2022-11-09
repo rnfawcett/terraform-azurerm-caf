@@ -281,7 +281,10 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
     }
   }
 
-  health_probe_id = try(var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
+  health_probe_id = try(
+    var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id,
+    try(var.lb_probes[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.probe_key].id, null)
+  )
 
 }
 
